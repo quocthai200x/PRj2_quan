@@ -31,7 +31,10 @@ const New = ({ inputs, title }) => {
         img: url,
       };
 
-      await axios.post("/auth/register", newUser);
+      const res = await axios.post("/auth/register", newUser);
+      if(res.data == "User has been created."){
+        alert("A new user has been added")
+      }
     } catch (err) {
       console.log(err);
     }

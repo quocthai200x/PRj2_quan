@@ -4,8 +4,10 @@ import { createError } from "../utils/error.js";
 
 export const createRoom = async (req, res, next) => {
   const hotelId = req.params.hotelid;
-  const newRoom = new Room(req.body);
-
+  let room = req.body;
+  room.hotelId = hotelId;
+  console.log(room)
+  const newRoom = new Room(room);
   try {
     const savedRoom = await newRoom.save();
     try {
@@ -39,7 +41,8 @@ export const updateRoomAvailability = async (req, res, next) => {
       { "roomNumbers._id": req.params.id },
       {
         $push: {
-          "roomNumbers.$.unavailableDates": req.body.dates
+          "roomNumbers.$.unavailableDates": req.body.dates,
+          
         },
       }
     );

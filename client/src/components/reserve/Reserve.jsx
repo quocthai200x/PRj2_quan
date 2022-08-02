@@ -5,14 +5,13 @@ import "./reserve.css";
 import useFetch from "../../hooks/useFetch";
 import { useContext, useState } from "react";
 import { SearchContext } from "../../context/SearchContext";
-import axios from "axios";
+import axios from '../../axios'
 import { useNavigate } from "react-router-dom";
 
 const Reserve = ({ setOpen, hotelId }) => {
   const [selectedRooms, setSelectedRooms] = useState([]);
   const { data, loading, error } = useFetch(`/hotels/room/${hotelId}`);
   const { dates } = useContext(SearchContext);
-
   const getDatesInRange = (startDate, endDate) => {
     const start = new Date(startDate);
     const end = new Date(endDate);
@@ -32,8 +31,8 @@ const Reserve = ({ setOpen, hotelId }) => {
   const alldates = getDatesInRange(dates[0].startDate, dates[0].endDate);
 
   const isAvailable = (roomNumber) => {
-    const isFound = roomNumber.unavailableDates.some((date) =>
-      alldates.includes(new Date(date).getTime())
+    const isFound = roomNumber.unavailableDates.some((dateInfo) =>
+      alldates.includes(new Date(dateInfo.date).getTime())
     );
 
     return !isFound;
@@ -52,11 +51,21 @@ const Reserve = ({ setOpen, hotelId }) => {
   const navigate = useNavigate();
 
   const handleClick = async () => {
+    let userId = JSON.parse(localStorage.getItem('user'))._id;
+    let array = []
+    alldates.forEach(date =>{
+      let newDate = {
+        date: date,
+        userId: userId
+      }
+      array.push(newDate)
+    })
+    // console.log(array)
     try {
       await Promise.all(
         selectedRooms.map((roomId) => {
           const res = axios.put(`/rooms/availability/${roomId}`, {
-            dates: alldates,
+            dates: array,
           });
           return res.data;
         })
@@ -64,7 +73,8 @@ const Reserve = ({ setOpen, hotelId }) => {
       setOpen(false);
       navigate("/");
     } catch (err) {}
-  };
+  }
+
   return (
     <div className="reserve">
       <div className="rContainer">

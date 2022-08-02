@@ -52,7 +52,10 @@ const NewHotel = () => {
         photos: list,
       };
 
-      await axios.post("/hotels", newhotel);
+      const res = await axios.post("/hotels", newhotel);
+      if(res.data._id){
+        alert("A new Hotel has been added") 
+      }
     } catch (err) {console.log(err)}
   };
   return (
@@ -105,19 +108,6 @@ const NewHotel = () => {
                 <select id="featured" onChange={handleChange}>
                   <option value={false}>No</option>
                   <option value={true}>Yes</option>
-                </select>
-              </div>
-              <div className="selectRooms">
-                <label>Rooms</label>
-                <select id="rooms" multiple onChange={handleSelect}>
-                  {loading
-                    ? "loading"
-                    : data &&
-                      data.map((room) => (
-                        <option key={room._id} value={room._id}>
-                          {room.title}
-                        </option>
-                      ))}
                 </select>
               </div>
               <button onClick={handleClick}>Send</button>

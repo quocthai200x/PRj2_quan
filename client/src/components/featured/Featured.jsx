@@ -3,7 +3,7 @@ import "./featured.css";
 
 const Featured = () => {
   const { data, loading, error } = useFetch(
-    "/hotels/countByCity?cities=Hà Nội,TP HCM,Đà Nẵng"
+    "/hotels/getCount/countByCity?cities=Hà Nội,TP HCM,Đà Nẵng"
   );
 
   return (

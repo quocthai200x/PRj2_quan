@@ -26,6 +26,11 @@ export const updateHotel = async (req, res, next) => {
 export const deleteHotel = async (req, res, next) => {
   try {
     await Hotel.findByIdAndDelete(req.params.id);
+    try {
+      let count = await Room.deleteMany({hotelId: req.params.id});
+    } catch (err) {
+      next(err);
+    }
     res.status(200).json("Hotel has been deleted.");
   } catch (err) {
     next(err);

@@ -2,7 +2,7 @@ import "./newRoom.scss";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import { roomInputs } from "../../formSource";
 import useFetch from "../../hooks/useFetch";
 import axios from "axios";
@@ -14,21 +14,29 @@ const NewRoom = () => {
 
   const { data, loading, error } = useFetch("/hotels");
 
+  useEffect(()=>{
+    if(data.length!=0){
+      setHotelId(data[0]._id)
+    }
+  },[data])
   const handleChange = (e) => {
     setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
+
 
   const handleClick = async (e) => {
     e.preventDefault();
     const roomNumbers = rooms.split(",").map((room) => ({ number: room }));
     try {
-      await axios.post(`/rooms/${hotelId}`, { ...info, roomNumbers });
+      const res = await axios.post(`/rooms/${hotelId}`, { ...info, roomNumbers });
+      if(res.data._id){
+        alert("A new room has been added")
+      }
     } catch (err) {
       console.log(err);
     }
   };
 
-  console.log(info)
   return (
     <div className="new">
       <Sidebar />
@@ -61,14 +69,17 @@ const NewRoom = () => {
               <div className="formInput">
                 <label>Choose a hotel</label>
                 <select
+                  
                   id="hotelId"
-                  onChange={(e) => setHotelId(e.target.value)}
+                  onChange={(e) => {setHotelId(e.target.value)}}
                 >
                   {loading
                     ? "loading"
                     : data &&
-                      data.map((hotel) => (
-                        <option key={hotel._id} value={hotel._id}>{hotel.name}</option>
+                      data.map((hotel, index) => (
+                        <option 
+                          key={hotel._id} 
+                          value={hotel._id}>{hotel.name}</option>
                       ))}
                 </select>
               </div>
