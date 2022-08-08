@@ -30,12 +30,15 @@ const RoomSchema = new mongoose.Schema(
       unavailableDates: [{
         isCheckIn: {type: Boolean, default: false},
         isCheckOut: {type: Boolean, default: false},
+        createAt: {
+          type: Date, default: new Date().toISOString(), },
         date: {type: [Date]},
         userId: {
           type : mongoose.Types.ObjectId, 
           ref : "User", 
           require : true,
-        }
+        },
+      
       }
       ]
     }],

@@ -7,13 +7,21 @@ import List from "../../components/TableHotel/TableHotel.jsx";
 import useFetch from "../../hooks/useFetch";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import moment from "moment"
 
-
+let thisMonth = moment(Date.now()).format("M")
+let oneMonthAgo = moment(Date.now()).subtract(1, 'months').format("M");
+let twoMonthAgo = moment(Date.now()).subtract(2, 'months').format("M");
+let threeMonthAgo = moment(Date.now()).subtract(3, 'months').format("M");
+let fourMonthAgo = moment(Date.now()).subtract(4, 'months').format("M");
+let fiveMonthAgo = moment(Date.now()).subtract(5, 'months').format("M");
 const Single = () => {
+  
   const location = useLocation();
   const path = location.pathname
   const { data, loading, error } = useFetch(`${path}`);
   const [isModifyHotel, setIsModifyHotel] = useState(false);
+  const [chartData, setChartData] = useState([]);
 
   const [hotelnfo, setHotelnfo] = useState({
     address: "",
@@ -31,7 +39,7 @@ const Single = () => {
     _id: ""
   })
 
-  const [roooms, setRooms] = useState([])
+  const [rooms, setRooms] = useState([])
 
   useEffect(() => {
     if (data._id) {
@@ -51,6 +59,43 @@ const Single = () => {
     // console.log(hotelnfo);
   }, [hotelnfo])
 
+  useEffect(() => {
+    axios.get('/rooms').then(res => {
+      return res.data
+    }).then(rooms => {
+      // console.log(rooms)
+      let roomsFilter = rooms.filter(room => moment(room.updatedAt).format("M") == thisMonth
+        || moment(room.updatedAt).format("M") == oneMonthAgo
+        || moment(room.updatedAt).format("M") == twoMonthAgo
+        || moment(room.updatedAt).format("M") == threeMonthAgo
+        || moment(room.updatedAt).format("M") == fourMonthAgo
+        || moment(room.updatedAt).format("M") == fiveMonthAgo
+      )
+
+      // ----------------------------
+      let array = []
+      for (let index = 5; index >= 0; index--) {
+        let userEachMonth = 0
+        roomsFilter.forEach(room => {
+          room.roomNumbers.forEach((roomNumber) => {
+            let orders = roomNumber.unavailableDates.filter(order =>
+              moment(order.date[0]).format("M") == thisMonth - index
+            )
+            userEachMonth += orders.length
+          })
+        })
+        // console.log(moment().month(thisMonth - index).format("MMM"))
+        
+        array.push({
+          name: moment().month(thisMonth - index).format("MMM"),
+          Total: userEachMonth
+        })
+
+      }
+      setChartData(array)
+      // -----------------
+    })
+  }, [rooms])
 
 
   const handleUpdate = (e) => {
@@ -79,7 +124,7 @@ const Single = () => {
                 className="itemImg"
               />
               <div className="details">
-              {isModifyHotel ?
+                {isModifyHotel ?
                   <input className="itemTitle"
                     value={hotelnfo.title}
                     onChange={e => setHotelnfo({ ...hotelnfo, title: e.target.value })}
@@ -88,7 +133,7 @@ const Single = () => {
                   :
 
                   <h1 className="itemTitle">{hotelnfo.title}</h1>
-              }
+                }
                 <div className="detailItem">
                   <span className="itemKey">Địa chỉ:</span>
                   {isModifyHotel ?
@@ -116,7 +161,7 @@ const Single = () => {
 
                   }
                 </div>
-                
+
 
                 <div className="detailItem">
                   <span className="itemKey">Khoảng cách tới trung tâm:</span>
@@ -160,12 +205,12 @@ const Single = () => {
             </div>
           </div>
           <div className="right">
-            <Chart aspect={3 / 1} title="User Spending ( Last 6 Months)" />
+            <Chart data={chartData} aspect={3 / 1} title="Số lượng đặt (6 tháng gần nhất)" />
           </div>
         </div>
         <div className="bottom">
           <h1 className="title">Các phòng của khách sạn</h1>
-          <List rows={roooms} />
+          <List rows={rooms} />
         </div>
       </div>
     </div>

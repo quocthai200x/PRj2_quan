@@ -10,11 +10,18 @@ import axios from "axios";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
+import moment from "moment"
+
+let thisMonth = moment(Date.now()).format("M")
+
+
 const SingleRoom = () => {
   const location = useLocation();
   const path = location.pathname
   const { data, loading, error } = useFetch(`${path}`);
   const [isModifyRoom, setIsModifyRoom] = useState(false);
+  const [chartData, setChartData] = useState([]);
+
   const [roomInfo, setRoomInfo] = useState({
     desc: "",
     maxPeople: 0,
@@ -29,10 +36,33 @@ const SingleRoom = () => {
     if (data.length != 0) {
       let { desc, maxPeople, price, roomNumbers, title, _id, isUsed } = data
       setRoomInfo({ desc, maxPeople, price, roomNumbers, title, _id, isUsed })
+
+      let array = []
+      for (let index = 5; index >= 0; index--) {
+        let userEachMonth = 0
+        data.roomNumbers.forEach((roomNumber) => {
+          let orders = roomNumber.unavailableDates.filter(order =>
+            moment(order.date[0]).format("M") == thisMonth - index
+          )
+          userEachMonth += orders.length
+        })
+
+        // console.log(moment().month(thisMonth - index).format("MMM"))
+
+        array.push({
+          name: moment().month(thisMonth - index).format("MMM"),
+          Total: userEachMonth
+        })
+
+      }
+      setChartData(array)
+
     }
 
 
   }, [data])
+
+
 
   const handleUpdate = (e) => {
     try {
@@ -43,27 +73,27 @@ const SingleRoom = () => {
     }
   }
 
-  const handleCheckOut = (index, indexRow, billId) =>{
+  const handleCheckOut = (index, indexRow, billId) => {
     try {
       const res = axios.put(`/rooms/checkOut/${billId}`)
       let rooms = roomInfo.roomNumbers
       rooms[index].unavailableDates[indexRow].isCheckOut = true;
       rooms[index].unavailableDates[indexRow].isCheckIn = true;
-      setRoomInfo({...roomInfo, roomNumbers: rooms})
+      setRoomInfo({ ...roomInfo, roomNumbers: rooms })
     } catch (error) {
       console.log(error);
     }
 
   }
-  
 
-  const handleCheckIn = (index, indexRow, billId) =>{
+
+  const handleCheckIn = (index, indexRow, billId) => {
     try {
       const res = axios.put(`/rooms/checkIn/${billId}`)
       let rooms = roomInfo.roomNumbers
       rooms[index].unavailableDates[indexRow].isCheckOut = false;
       rooms[index].unavailableDates[indexRow].isCheckIn = true;
-      setRoomInfo({...roomInfo, roomNumbers: rooms})
+      setRoomInfo({ ...roomInfo, roomNumbers: rooms })
     } catch (error) {
       console.log(error);
     }
@@ -160,7 +190,7 @@ const SingleRoom = () => {
             </div>
           </div>
           <div className="right">
-            <Chart aspect={3 / 1} title="User Spending ( Last 6 Months)" />
+            <Chart data ={chartData} aspect={3 / 1} title="Số lượng đặt (6 tháng gần nhất)" />
           </div>
         </div>
         <div className="bottom">

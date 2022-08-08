@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 const List = ({ rows = [], hotelId}) => {
   // tí thêm rows vào props
-  console.log(rows);
+  // console.log(rows);
   return (
     <TableContainer component={Paper} className="table">
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
