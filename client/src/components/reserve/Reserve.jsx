@@ -31,9 +31,16 @@ const Reserve = ({ setOpen, hotelId }) => {
   const alldates = getDatesInRange(dates[0].startDate, dates[0].endDate);
 
   const isAvailable = (roomNumber) => {
-    const isFound = roomNumber.unavailableDates.some((dateInfo) =>
-      alldates.includes(new Date(dateInfo.date).getTime())
-    );
+    let isFound = false;
+    roomNumber.unavailableDates.every((room) => {
+      isFound = room.date.some((dateInfo) =>
+        alldates.includes(new Date(dateInfo).getTime())
+      );
+      if (isFound) {
+        return !isFound;
+      }
+    })
+
 
     return !isFound;
   };
@@ -52,27 +59,22 @@ const Reserve = ({ setOpen, hotelId }) => {
 
   const handleClick = async () => {
     let userId = JSON.parse(localStorage.getItem('user'))._id;
-    let array = []
-    alldates.forEach(date =>{
-      let newDate = {
-        date: date,
-        userId: userId
-      }
-      array.push(newDate)
-    })
     // console.log(array)
     try {
       await Promise.all(
         selectedRooms.map((roomId) => {
           const res = axios.put(`/rooms/availability/${roomId}`, {
-            dates: array,
+            dates: {
+              date: alldates,
+              userId,
+            }
           });
           return res.data;
         })
       );
       setOpen(false);
       navigate("/");
-    } catch (err) {}
+    } catch (err) { }
   }
 
   return (

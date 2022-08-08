@@ -4,6 +4,8 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Widget = ({ type }) => {
   let data;
@@ -14,7 +16,9 @@ const Widget = ({ type }) => {
 
   switch (type) {
     case "user":
+      
       data = {
+        url: '/users',
         title: "USERS",
         isMoney: false,
         link: "See all users",
@@ -31,6 +35,7 @@ const Widget = ({ type }) => {
       break;
     case "order":
       data = {
+        url: '/',
         title: "ORDERS",
         isMoney: false,
         link: "View all orders",
@@ -47,6 +52,7 @@ const Widget = ({ type }) => {
       break;
     case "earning":
       data = {
+        url: '/',
         title: "EARNINGS",
         isMoney: true,
         link: "View net earnings",
@@ -60,6 +66,7 @@ const Widget = ({ type }) => {
       break;
     case "balance":
       data = {
+        url: '/',
         title: "BALANCE",
         isMoney: true,
         link: "See details",
@@ -85,7 +92,9 @@ const Widget = ({ type }) => {
         <span className="counter">
           {data.isMoney && "$"} {amount}
         </span>
-        <span className="link">{data.link}</span>
+        <Link to={data.url} style={{ textDecoration: "none" }}>
+          <span className="link">{data.link}</span>
+        </Link>
       </div>
       <div className="right">
         <div className="percentage positive">

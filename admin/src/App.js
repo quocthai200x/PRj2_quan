@@ -2,8 +2,8 @@ import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import List from "./pages/list/List";
 import Single from "./pages/single/Single";
-import SingleHotel from "./pages/single hotel/SingleHotel";
-import SingleRoom from "./pages/single room/SingleRoom";
+import SingleHotel from "./pages/singleHotel/SingleHotel";
+import SingleRoom from "./pages/singleRoom/SingleRoom";
 
 import New from "./pages/new/New";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";

@@ -64,7 +64,7 @@ const NewHotel = () => {
       <div className="newContainer">
         <Navbar />
         <div className="top">
-          <h1>Add New Product</h1>
+          <h1>Thêm khách sạn mới</h1>
         </div>
         <div className="bottom">
           <div className="left">
@@ -81,7 +81,7 @@ const NewHotel = () => {
             <form>
               <div className="formInput">
                 <label htmlFor="file">
-                  Image: <DriveFolderUploadOutlinedIcon className="icon" />
+                  Ảnh: <DriveFolderUploadOutlinedIcon className="icon" />
                 </label>
                 <input
                   type="file"
@@ -104,13 +104,13 @@ const NewHotel = () => {
                 </div>
               ))}
               <div className="formInput">
-                <label>Featured</label>
+                <label>Đa dạng</label>
                 <select id="featured" onChange={handleChange}>
-                  <option value={false}>No</option>
-                  <option value={true}>Yes</option>
+                  <option value={false}>Không</option>
+                  <option value={true}>Có</option>
                 </select>
               </div>
-              <button onClick={handleClick}>Send</button>
+              <button onClick={handleClick}>Gửi</button>
             </form>
           </div>
         </div>

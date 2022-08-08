@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 const RoomSchema = new mongoose.Schema(
   {
+    isUsed:{
+      type: Boolean,
+      default: true,
+    },
     hotelId: {
       type: String,
       required: true,
@@ -24,11 +28,13 @@ const RoomSchema = new mongoose.Schema(
     roomNumbers: [{
       number: Number,
       unavailableDates: [{
-        date: {
-          type: Date,
-        },
+        isCheckIn: {type: Boolean, default: false},
+        isCheckOut: {type: Boolean, default: false},
+        date: {type: [Date]},
         userId: {
-          type: String
+          type : mongoose.Types.ObjectId, 
+          ref : "User", 
+          require : true,
         }
       }
       ]

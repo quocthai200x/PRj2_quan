@@ -19,7 +19,6 @@ const Datatable = ({columns}) => {
 
   const handleDelete = async (id, hotelId) => {
     try {
-      console.log(hotelId)
       if(path == 'rooms'){
         await axios.delete(`/${path}/${id}/${hotelId}`);
         setList(list.filter((item) => item._id !== id));
@@ -31,35 +30,39 @@ const Datatable = ({columns}) => {
     } catch (err) {}
   };
 
+  const handleUpdateInUsed = (roomId) =>{
+
+  }
+
   const actionColumn = [
     {
       field: "action",
-      headerName: "Action",
+      headerName: "Các hoạt động",
       width: 200,
       renderCell: (params) => {
-        // console.log(params.row)
         return (
           <div className="cellAction">
             <Link to={`/${path}/${params.row._id}`} style={{ textDecoration: "none" }}>
-              <div className="viewButton">View</div>
+              <div className="viewButton">Xem</div>
             </Link>
             <div
               className="deleteButton"
               onClick={() => handleDelete(params.row._id, params.row.hotelId)}
             >
-              Delete
+              Xóa
             </div>
           </div>
         );
       },
     },
+
   ];
   return (
     <div className="datatable">
       <div className="datatableTitle">
         {path}
         <Link to={`/${path}/new`} className="link">
-          Add New
+          Thêm mới
         </Link>
       </div>
 

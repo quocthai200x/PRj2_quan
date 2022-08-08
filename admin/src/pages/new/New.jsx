@@ -64,7 +64,7 @@ const New = ({ inputs, title }) => {
             <form>
               <div className="formInput">
                 <label htmlFor="file">
-                  Image: <DriveFolderUploadOutlinedIcon className="icon" />
+                  Ảnh: <DriveFolderUploadOutlinedIcon className="icon" />
                 </label>
                 <input
                   type="file"
@@ -85,7 +85,7 @@ const New = ({ inputs, title }) => {
                   />
                 </div>
               ))}
-              <button onClick={handleClick}>Send</button>
+              <button onClick={handleClick}>Gửi</button>
             </form>
           </div>
         </div>

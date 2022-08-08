@@ -30,7 +30,7 @@ const NewRoom = () => {
     try {
       const res = await axios.post(`/rooms/${hotelId}`, { ...info, roomNumbers });
       if(res.data._id){
-        alert("A new room has been added")
+        alert("Phòng được thêm mới")
       }
     } catch (err) {
       console.log(err);
@@ -43,7 +43,7 @@ const NewRoom = () => {
       <div className="newContainer">
         <Navbar />
         <div className="top">
-          <h1>Add New Room</h1>
+          <h1>Thêm phòng mới</h1>
         </div>
         <div className="bottom">
           <div className="right">
@@ -60,14 +60,14 @@ const NewRoom = () => {
                 </div>
               ))}
               <div className="formInput">
-                <label>Rooms</label>
+                <label>Các phòng</label>
                 <textarea
                   onChange={(e) => setRooms(e.target.value)}
-                  placeholder="give comma between room numbers."
+                  placeholder="Ghi số phòng cách nhau bởi dấu phẩy"
                 />
               </div>
               <div className="formInput">
-                <label>Choose a hotel</label>
+                <label>Chọn khách sạn</label>
                 <select
                   
                   id="hotelId"
@@ -83,7 +83,7 @@ const NewRoom = () => {
                       ))}
                 </select>
               </div>
-              <button onClick={handleClick}>Send</button>
+              <button onClick={handleClick}>Gửi</button>
             </form>
           </div>
         </div>

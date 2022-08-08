@@ -3,7 +3,7 @@ import "./single.scss";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import Chart from "../../components/chart/Chart";
-import List from "../../components/table/Table";
+// import List from "../../components/table/Table";
 import useFetch from "../../hooks/useFetch";
 import { useEffect, useState } from "react";
 
@@ -69,7 +69,7 @@ const Single = () => {
         </div>
         <div className="bottom">
         <h1 className="title">Last Transactions</h1>
-          <List/>
+          {/* <List/> */}
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import Room from "../models/Room.js";
 import Hotel from "../models/Hotel.js";
 import { createError } from "../utils/error.js";
+import mongoose from "mongoose";
 
 export const createRoom = async (req, res, next) => {
   const hotelId = req.params.hotelid;
@@ -35,6 +36,53 @@ export const updateRoom = async (req, res, next) => {
     next(err);
   }
 };
+
+export const updateRoomCheckIn = async (req, res, next) => {
+  try {
+    await Room.updateOne(
+      { "roomNumbers.unavailableDates._id": req.params.id },
+      {
+        $set: {
+          "roomNumbers.$.unavailableDates.$[j].isCheckIn": true,
+          "roomNumbers.$.unavailableDates.$[j].isCheckOut": false, 
+        },
+      },
+      {
+        arrayFilters:[{
+            "j._id" : mongoose.Types.ObjectId(req.params.id)
+        }]
+      }
+    );
+    res.status(200).json("User check in");
+  } catch (err) {
+    next(err);
+  }
+};
+
+
+export const updateRoomCheckOut = async (req, res, next) => {
+  try {
+    await Room.updateOne(
+      { "roomNumbers.unavailableDates._id": req.params.id },
+      {
+        $set: {
+          "roomNumbers.$.unavailableDates.$[j].isCheckIn": true,
+          "roomNumbers.$.unavailableDates.$[j].isCheckOut": true, 
+        },
+      },
+      {
+        arrayFilters:[{
+            "j._id" : mongoose.Types.ObjectId(req.params.id)
+        }]
+      }
+    );
+    res.status(200).json("User check out.");
+  } catch (err) {
+    next(err);
+  }
+};
+
+
 export const updateRoomAvailability = async (req, res, next) => {
   try {
     await Room.updateOne(
@@ -69,7 +117,7 @@ export const deleteRoom = async (req, res, next) => {
 };
 export const getRoom = async (req, res, next) => {
   try {
-    const room = await Room.findById(req.params.id);
+    const room = await Room.findById(req.params.id).populate('roomNumbers.unavailableDates.userId',{"roomNumbers.unavailableDates.userId.password":0})
     res.status(200).json(room);
   } catch (err) {
     next(err);
