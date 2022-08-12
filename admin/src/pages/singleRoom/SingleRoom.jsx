@@ -50,7 +50,7 @@ const SingleRoom = () => {
         // console.log(moment().month(thisMonth - index).format("MMM"))
 
         array.push({
-          name: moment().month(thisMonth - index).format("MMM"),
+          name: moment().month(thisMonth - index -1).format("MMM"),
           Total: userEachMonth
         })
 

@@ -4,6 +4,7 @@ import {
   deleteRoom,
   getRoom,
   getRooms,
+  getRoomsByUserId,
   updateRoom,
   updateRoomAvailability,
   updateRoomCheckIn,
@@ -30,5 +31,7 @@ router.get("/:id", getRoom);
 //GET ALL
 
 router.get("/", getRooms);
+
+router.get('/users/:id', getRoomsByUserId)
 
 export default router;

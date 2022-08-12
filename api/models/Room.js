@@ -6,8 +6,9 @@ const RoomSchema = new mongoose.Schema(
       default: true,
     },
     hotelId: {
-      type: String,
-      required: true,
+      type : mongoose.Types.ObjectId, 
+      ref : "Hotel", 
+      require : true,
     },
     title: {
       type: String,

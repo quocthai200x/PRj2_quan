@@ -44,12 +44,12 @@ export const updateRoomCheckIn = async (req, res, next) => {
       {
         $set: {
           "roomNumbers.$.unavailableDates.$[j].isCheckIn": true,
-          "roomNumbers.$.unavailableDates.$[j].isCheckOut": false, 
+          "roomNumbers.$.unavailableDates.$[j].isCheckOut": false,
         },
       },
       {
-        arrayFilters:[{
-            "j._id" : mongoose.Types.ObjectId(req.params.id)
+        arrayFilters: [{
+          "j._id": mongoose.Types.ObjectId(req.params.id)
         }]
       }
     );
@@ -67,12 +67,12 @@ export const updateRoomCheckOut = async (req, res, next) => {
       {
         $set: {
           "roomNumbers.$.unavailableDates.$[j].isCheckIn": true,
-          "roomNumbers.$.unavailableDates.$[j].isCheckOut": true, 
+          "roomNumbers.$.unavailableDates.$[j].isCheckOut": true,
         },
       },
       {
-        arrayFilters:[{
-            "j._id" : mongoose.Types.ObjectId(req.params.id)
+        arrayFilters: [{
+          "j._id": mongoose.Types.ObjectId(req.params.id)
         }]
       }
     );
@@ -90,7 +90,7 @@ export const updateRoomAvailability = async (req, res, next) => {
       {
         $push: {
           "roomNumbers.$.unavailableDates": req.body.dates,
-          
+
         },
       }
     );
@@ -117,7 +117,7 @@ export const deleteRoom = async (req, res, next) => {
 };
 export const getRoom = async (req, res, next) => {
   try {
-    const room = await Room.findById(req.params.id).populate('roomNumbers.unavailableDates.userId',{"roomNumbers.unavailableDates.userId.password":0})
+    const room = await Room.findById(req.params.id).populate('roomNumbers.unavailableDates.userId', { "roomNumbers.unavailableDates.userId.password": 0 })
     res.status(200).json(room);
   } catch (err) {
     next(err);
@@ -131,3 +131,89 @@ export const getRooms = async (req, res, next) => {
     next(err);
   }
 };
+
+export const getRoomsByUserId = async (req, res, next) => {
+  try {
+    let rooms = await Room.aggregate([
+      {
+
+        
+        $project: {
+          "isUsed": 1,
+          "hotelId": 1,
+          "title": 1,
+          "price": 1,
+          "maxPeople": 1,
+          "roomNumbers": {
+            "$map": {
+              "input": "$roomNumbers",
+              "as": "array",
+              "in": {
+                "number": "$$array.number",
+                "unavailableDates": {
+                  "$filter": {
+                    "input": "$$array.unavailableDates",
+                    "as": "nestedArray",
+                    "cond": {
+                      "$eq": [
+                        "$$nestedArray.userId",
+                        mongoose.Types.ObjectId(req.params.id)
+                      ],
+                      
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+    
+    ]).graphLookup({
+      from:"hotels",
+      startWith: "$hotelId",
+      connectFromField: "hotelId",
+      connectToField:"_id",
+      as:"hotelInfo",
+      maxDepth:1,
+      
+    })
+    const roomsData = rooms.filter(room=> {
+      let roomNumberFilter = room.roomNumbers.filter(roomNumber => roomNumber.unavailableDates.length != 0);
+      room.roomNumbers = roomNumberFilter
+      return room.roomNumbers.length!=0
+    })
+    res.status(200).json(roomsData);
+  } catch (error) {
+    next(error);
+  }
+}
+
+
+// Room.aggregate([
+//   {
+//     $project: {
+//       "roomNumbers": {
+//         "$map": {
+//           "input": "$roomNumbers",
+//           "as": "array",
+//           "in": {
+          
+//             "unavailableDates": {
+//               "$filter": {
+//                 "input": "$$array.unavailableDates",
+//                 "as": "nestedArray",
+//                 "cond": {
+//                   "$eq": [
+//                     "$$nestedArray.userId",
+//                     "62e8ed1228b3344a661fa04f"
+//                   ]
+//                 }
+//               }
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+// ])
