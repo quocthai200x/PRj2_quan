@@ -23,7 +23,6 @@ const New = ({ inputs, title }) => {
         "https://api.cloudinary.com/v1_1/lamadev/image/upload",
         data
       );
-
       const { url } = uploadRes.data;
 
       const newUser = {
