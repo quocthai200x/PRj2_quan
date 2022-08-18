@@ -18,13 +18,13 @@ const NewHotel = () => {
     setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
 
-  const handleSelect = (e) => {
-    const value = Array.from(
-      e.target.selectedOptions,
-      (option) => option.value
-    );
-    setRooms(value);
-  };
+  // const handleSelect = (e) => {
+  //   const value = Array.from(
+  //     e.target.selectedOptions,
+  //     (option) => option.value
+  //   );
+  //   setRooms(value);
+  // };
   
   console.log(files)
 
@@ -103,13 +103,13 @@ const NewHotel = () => {
                   />
                 </div>
               ))}
-              <div className="formInput">
+              {/* <div className="formInput">
                 <label>Đa dạng</label>
                 <select id="featured" onChange={handleChange}>
                   <option value={false}>Không</option>
                   <option value={true}>Có</option>
                 </select>
-              </div>
+              </div> */}
               <button onClick={handleClick}>Gửi</button>
             </form>
           </div>

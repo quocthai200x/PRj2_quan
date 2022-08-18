@@ -40,7 +40,7 @@ const List = ({ rows = [], index, handleCheckOut, handleCheckIn }) => {
               <TableCell className="tableCell">{moment(row.date[row.date.length - 1]).format("DD/MM/YYYY")}</TableCell>
               {row.isCheckIn ? row.isCheckOut ?
                 <TableCell className="tableCell">
-                  <span className={`status isCheckOut`}>Đã trả phòng</span>
+                  <span className={`status isCheckOut`}>Đã trả phòng </span>
                 </TableCell>
                 :
                 <TableCell className="tableCell">

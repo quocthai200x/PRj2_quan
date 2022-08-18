@@ -39,7 +39,7 @@ const Widget = ({ type }) => {
         url: '/users',
         title: "USERS",
         isMoney: false,
-        link: "See all users",
+        link: "Xem tất cả người dùng",
         icon: (
           <PersonOutlinedIcon
             className="icon"
@@ -92,7 +92,7 @@ const Widget = ({ type }) => {
         url: '/',
         title: "ORDERS",
         isMoney: false,
-        link: "View all orders",
+        link: "",
         icon: (
           <ShoppingCartOutlinedIcon
             className="icon"
@@ -149,7 +149,7 @@ const Widget = ({ type }) => {
         url: '/',
         title: "EARNINGS",
         isMoney: true,
-        link: "View net earnings",
+        link: "",
         icon: (
           <MonetizationOnOutlinedIcon
             className="icon"
@@ -168,7 +168,7 @@ const Widget = ({ type }) => {
       <div className="left">
         <span className="title">{data.title}</span>
         <span className="counter">
-          {data.isMoney && "$"} {amount}
+          {data.isMoney && ""} {amount}
         </span>
         <Link to={data.url} style={{ textDecoration: "none" }}>
           <span className="link">{data.link}</span>
@@ -183,8 +183,8 @@ const Widget = ({ type }) => {
           :
           diff == 0 ?
             <div className="percentage ">
-              <KeyboardArrowUpIcon />
-              {diff} %
+              {/* <KeyboardArrowUpIcon /> */}
+             - 
             </div>
             :
             <div className="percentage negative">

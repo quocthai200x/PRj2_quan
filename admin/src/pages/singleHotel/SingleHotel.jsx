@@ -60,9 +60,9 @@ const Single = () => {
   }, [hotelnfo])
 
   useEffect(() => {
-    axios.get('/rooms').then(res => {
-      return res.data
-    }).then(rooms => {
+    // axios.get('/rooms').then(res => {
+    //   return res.data
+    // }).then(rooms => {
       // console.log(rooms)
       let roomsFilter = rooms.filter(room => moment(room.updatedAt).format("M") == thisMonth
         || moment(room.updatedAt).format("M") == oneMonthAgo
@@ -94,8 +94,9 @@ const Single = () => {
       }
       setChartData(array)
       // -----------------
-    })
-  }, [rooms])
+    }
+  
+  , [rooms])
 
 
   const handleUpdate = (e) => {
