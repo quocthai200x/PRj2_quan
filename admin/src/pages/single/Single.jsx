@@ -26,9 +26,9 @@ const Single = () => {
   const [orders, setOrders] = useState([])
   const [chartData, setChartData] = useState([])
   useEffect(() => {
-    let { city, country, email, img, username } = data
+    let { city, country, email, img, username,phone } = data
     setUserInfo({
-      city, country, email, img, username
+      city, country, email, img, username,phone
     })
   }, [data])
 
@@ -95,7 +95,7 @@ const Single = () => {
       })
   }
   // useEffect(()=>{
-   
+  // console.log(userInfo)
   // },[orders])
   return (
     <div className="single">

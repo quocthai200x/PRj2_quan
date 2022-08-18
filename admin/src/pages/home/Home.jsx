@@ -11,7 +11,7 @@ import moment from "moment"
 
 
 const Home = () => {
-  let thisMonth = moment(Date.now()).format("M")
+  let thisMonth = moment(Date.now()).format("M") // => aug
   let oneMonthAgo = moment(Date.now()).subtract(1, 'months').format("M");
   let twoMonthAgo = moment(Date.now()).subtract(2, 'months').format("M");
   let threeMonthAgo = moment(Date.now()).subtract(3, 'months').format("M");
@@ -91,7 +91,7 @@ const Home = () => {
         <div className="charts">
           {/* <Featured /> */}
           <Chart data={data} title="Doanh thu 6 tháng" aspect={3 / 1} />
-
+     
         </div>
         {/* <div className="listContainer"> */}
         {/* <div className="listTitle">Latest Transactions</div> */}

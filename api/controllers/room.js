@@ -99,6 +99,8 @@ export const updateRoomAvailability = async (req, res, next) => {
     next(err);
   }
 };
+
+
 export const deleteRoom = async (req, res, next) => {
   const hotelId = req.params.hotelid;
   try {
@@ -136,8 +138,6 @@ export const getRoomsByUserId = async (req, res, next) => {
   try {
     let rooms = await Room.aggregate([
       {
-
-        
         $project: {
           "isUsed": 1,
           "hotelId": 1,
