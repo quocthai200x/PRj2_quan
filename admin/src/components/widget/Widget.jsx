@@ -28,11 +28,12 @@ const Widget = ({ type }) => {
       }).then(resData => {
         let userCreateThisMonth = resData.filter(elem => moment(elem.createdAt).format("M") == thisMonth).length
         let userCreateLastMonth = resData.filter(elem => moment(elem.createdAt).format("M") == lastMonth).length
-
+      
 
         if (userCreateLastMonth > 0) {
           setDiff(userCreateThisMonth / (userCreateLastMonth) * 100)
         }
+        console.log("ABC" + userCreateThisMonth);
         setAmount(userCreateThisMonth)
       });
       data = {

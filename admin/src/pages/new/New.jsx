@@ -20,7 +20,7 @@ const New = ({ inputs, title }) => {
     data.append("upload_preset", "upload");
     try {
       const uploadRes = await axios.post(
-        "https://api.cloudinary.com/v1_1/lamadev/image/upload",
+        "https://api.cloudinary.com/v1_1/dr5a2uwpd/image/upload",
         data
       );
       const { url } = uploadRes.data;
